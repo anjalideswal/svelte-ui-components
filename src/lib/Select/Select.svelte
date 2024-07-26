@@ -16,7 +16,8 @@
     selectedItemLabel: null,
     showSelectedItemInDropdown: false,
     selectMultipleItems: false,
-    leftIcon: null
+    leftIcon: null,
+    showSelectedItem: true
   };
 
   const dropDownIcon =
@@ -140,7 +141,7 @@
   });
 </script>
 
-{#if properties.label !== null}
+{#if properties.label !== null && properties.label !== ''}
   <label class="label-container" for={properties.label}>
     {properties.label}
   </label>
@@ -165,17 +166,21 @@
         {#if properties.selectMultipleItems && Array.isArray(properties.selectedItemLabel) && Array.isArray(properties.selectedItem)}
           {#if properties.selectedItem.length === 0}
             {properties.placeholder}
-          {:else if properties.selectedItemLabel?.length === 0 || properties.showSelectedItemInDropdown}
+          {:else if properties.selectedItemLabel?.length === 0 || (properties.showSelectedItemInDropdown && properties.showSelectedItem !== false)}
             {properties.selectedItem.join(', ')}
-          {:else}
+          {:else if properties.showSelectedItem !== false}
             {properties.selectedItemLabel.join(', ')}
+          {:else}
+            {properties.placeholder}
           {/if}
         {:else if properties.selectedItem === ''}
           {properties.placeholder}
-        {:else if properties.selectedItemLabel === null || properties.selectedItemLabel === ''}
+        {:else if properties.selectedItemLabel === null || (properties.selectedItemLabel === '' && properties.showSelectedItem !== false)}
           {properties.selectedItem}
-        {:else}
+        {:else if properties.showSelectedItem !== false}
           {properties.selectedItemLabel}
+        {:else}
+          {properties.placeholder}
         {/if}
       </div>
       <div class="filler" />
@@ -256,8 +261,6 @@
     height: var(--dropdown-arrow-icon-height, 16px);
     width: var(--dropdown-arrow-icon-width, 16px);
     transition: transform 0.1s;
-    position: absolute;
-    right: 10px;
   }
 
   .active {
@@ -290,7 +293,8 @@
     white-space: var(--selected-item-white-space, nowrap);
     overflow: var(--selected-item-overflow, hidden);
     text-overflow: var(--selected-item-text-overflow, ellipsis);
-    max-width: var(--selected-item-max-widhh, 100%);
+    max-width: var(--selected-item-max-width, 100%);
+    padding: var(--selected-item-padding, var(--item-padding, 8px 16px));
   }
 
   .selected-content {
@@ -359,20 +363,6 @@
     --button-width: var(--multipleSelect-btn-width, 100%);
   }
 
-  .icon-container {
-    width: var(--select-icon-container-width, fit-content);
-    height: var(--select-icon-container-height, fit-content);
-    border-radius: var(--select-icon-container-border-radius);
-    opacity: var(--select-icon-container-opacity);
-    background: var(--select-icon-container-background);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: var(--select-icon-container-margin, 0px 8px 0px 0px);
-    padding: var(--select-icon-container-padding);
-    --image-height: var(--select-icon-height);
-    --image-width: var(--select-icon-height);
-  }
 
   .apply-btn-container {
     padding: var(--apply-btn-container-padding, 5px);

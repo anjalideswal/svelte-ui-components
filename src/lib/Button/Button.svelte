@@ -32,12 +32,12 @@
     type={properties.type}
   >
     {#if properties.showLoader && properties.loaderType === 'Circular'}
-      <Loader />
+      <div class="button-loader"><Loader /></div>
     {/if}
     {#if $$slots.icon}
-      <slot name="icon" />
+      <div class="button-icon"><slot name="icon" /></div>
     {/if}
-    {properties.text}
+    <div class="button-text">{properties.text}</div>
   </button>
 </div>
 
@@ -65,9 +65,21 @@
     display: flex;
     justify-content: var(--button-justify-content, center);
     align-items: center;
-    flex-direction: row;
+    flex-direction: var(--button-content-flex-direction, row);
     gap: var(--button-content-gap, 16px);
     visibility: var(--button-visibility, visible);
+  }
+
+  .button-loader {
+    order: var(--button-loader-order, 1);
+  }
+
+  .button-icon {
+    order: var(--button-icon-order, 2);
+  }
+
+  .button-text {
+    order: var(--button-text-order, 3);
   }
 
   button:hover {
