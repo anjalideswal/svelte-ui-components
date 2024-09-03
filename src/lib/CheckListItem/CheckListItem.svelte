@@ -10,7 +10,7 @@
     if (e.target instanceof HTMLInputElement && typeof e.target.checked === 'boolean') {
       checked = e.target.checked;
     }
-    dispatch('click', { text, checked });
+    dispatch('click', checked);
   }
 </script>
 
